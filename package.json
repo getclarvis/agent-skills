@@ -1,6 +1,6 @@
 {
   "name": "@clarvis/agent-skills",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Discover, parse, merge and serve Claude-Code / opencode-style SKILL.md skills from caller-supplied roots — a leaf library with progressive disclosure (catalog / body / resources).",
   "license": "MIT",
   "keywords": [
