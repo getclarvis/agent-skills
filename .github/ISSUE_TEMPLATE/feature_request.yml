@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an improvement to @clarvis/agent-skills
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What are you trying to do, and what is missing or hard today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behavior
+      description: |
+        Describe the change concretely — e.g. a new option, a frontmatter field, an error code, a
+        change to discovery/precedence, or a rendering helper on ./catalog.
+    validations:
+      required: true
+  - type: dropdown
+    id: contract-impact
+    attributes:
+      label: Does this change a contract (discovery, precedence, the frontmatter schema, an error code, or the public API)?
+      options:
+        - 'No'
+        - 'Yes (discovery/precedence, the schema, a result shape, or an error code changes)'
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you be willing to contribute a PR?
+      options:
+        - 'Yes'
+        - 'Maybe, with guidance'
+        - 'No'
