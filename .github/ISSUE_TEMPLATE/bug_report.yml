@@ -1,0 +1,77 @@
+name: Bug report
+description: Report a problem with @clarvis/agent-skills
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please **do not include secrets** (API keys, tokens) in this report.
+        For security vulnerabilities, use the private process in
+        [SECURITY.md](https://github.com/getclarvis/agent-skills/blob/main/SECURITY.md) instead.
+  - type: input
+    id: version
+    attributes:
+      label: agent-skills version
+      placeholder: e.g. 0.1.0 (output of `npm ls @clarvis/agent-skills`)
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: e.g. 20.11.0 (output of `node --version`; agent-skills requires >= 20)
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. macOS 15.1, Ubuntu 24.04, Fedora 44
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area is involved?
+      multiple: true
+      options:
+        - Discovery / precedence (which skill wins across roots)
+        - Frontmatter parsing / schema validation
+        - Resource enumeration / resourcePath confinement
+        - Symlinked skill dirs / resources
+        - The ./catalog export (renderSkillCatalog)
+        - createAgentSkills / resolveConfig / discoverSkills
+  - type: dropdown
+    id: config
+    attributes:
+      label: Relevant options
+      multiple: true
+      options:
+        - 'strict: true'
+        - 'followSymlinks: false'
+        - custom workspace / cwd / home
+        - defaults
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include a minimal snippet — the `createAgentSkills(...)` options, the on-disk skill layout, and the call you made.
+      placeholder: |
+        1. const skills = createAgentSkills({ workspace: "/path" })
+        2. skills.loadSkill("pdf")
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual behavior
+      description: What did you expect, and what happened instead? Include the `SkillError` code if one was thrown.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output / stderr
+      description: Paste any `clarvis-agent-skills:` stderr warnings or the error envelope (redact secrets).
+      render: text
