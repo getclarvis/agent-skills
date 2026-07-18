@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- **Skill shadowing metadata on cross-root merges.** When same-named skills collide across roots,
+  the last-wins winner now records the skills it shadowed in the new optional `SkillInfo.shadowed`
+  field (a `ShadowedSkill[]` of `{ source, scope, root, dir }`, exported from the package root).
+  Consumers use this to report peer collisions (e.g. two plugins shipping a skill with the same
+  name) without changing which skill is reachable. Purely additive — skills that shadow nothing
+  leave `shadowed` unset.
+
 ## [0.1.1] - 2026-07-11
 
 First release published through the public `getclarvis/agent-skills` CI via npm trusted publishing

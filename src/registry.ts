@@ -6,7 +6,14 @@ import { normalizeTools, parseSkill } from "./parse.js";
 import { resolveResourcePath } from "./paths.js";
 import { enumerateResources, listSkillDirs } from "./scan.js";
 import type { SkillConfig } from "./config.js";
-import type { ResolvedSkill, SkillContent, SkillInfo, SkillRegistry, SkillRoot } from "./types.js";
+import type {
+  ResolvedSkill,
+  ShadowedSkill,
+  SkillContent,
+  SkillInfo,
+  SkillRegistry,
+  SkillRoot,
+} from "./types.js";
 
 export function buildRegistry(config: SkillConfig): SkillRegistry {
   const groups = config.roots.map((root) => scanRoot(root, config));
@@ -20,10 +27,31 @@ export function mergeSkills(groups: ResolvedSkill[][]): ResolvedSkill[] {
   const byName = new Map<string, ResolvedSkill>();
   for (const group of groups) {
     for (const skill of group) {
-      byName.set(skill.info.name, skill);
+      const existing = byName.get(skill.info.name);
+      if (existing === undefined) {
+        byName.set(skill.info.name, skill);
+        continue;
+      }
+      // Later roots win (last-wins precedence). The previous winner — and anything
+      // it had already shadowed — is now shadowed by this skill.
+      const shadowed: ShadowedSkill[] = [
+        ...(skill.info.shadowed ?? []),
+        toShadowed(existing.info),
+        ...(existing.info.shadowed ?? []),
+      ];
+      byName.set(skill.info.name, { ...skill, info: { ...skill.info, shadowed } });
     }
   }
   return [...byName.values()];
+}
+
+function toShadowed(info: SkillInfo): ShadowedSkill {
+  return {
+    source: info.source,
+    scope: info.scope,
+    root: info.root,
+    dir: info.dir,
+  };
 }
 
 function scanRoot(root: SkillRoot, config: SkillConfig): ResolvedSkill[] {

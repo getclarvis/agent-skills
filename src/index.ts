@@ -52,6 +52,7 @@ export type { WarnSink } from "./lib/log.js";
 
 export type {
   SkillInfo,
+  ShadowedSkill,
   SkillContent,
   SkillResource,
   SkillScope,
